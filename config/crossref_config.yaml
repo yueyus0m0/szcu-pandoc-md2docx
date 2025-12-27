@@ -1,0 +1,110 @@
+# ============================================================
+# Pandoc-Crossref：图 / 表 / 式 编号与 Word 样式映射配置文件
+# 支持：章编号（1-2）、分图 (a)/(b) 分图名、主图“图1-2 图名”
+# ============================================================
+
+# ------------------------------------------------------------
+# 章节编号
+# chapters = true → 图1-1、表1-1 会使用“章节号-编号”
+# chaptersDepth = 1 → 按 Markdown 一级标题 (#) 作为章节
+# ------------------------------------------------------------
+chapters: true
+chaptersDepth: 1
+
+# ------------------------------------------------------------
+# “图 / 表 / 式” 前缀（出现在“图1-2 图名”里的那个“图”字）
+# figPrefix：引用用的前缀（如 “见图1-2”）
+# tblPrefix / eqnPrefix 同理
+# chapDelim：章节号与编号之间的分隔符（默认“.” → 这里改为“-”）
+# linkDelimiter：引用时的连接符；保持为“-”以统一格式
+# ------------------------------------------------------------
+figPrefix: "图"
+tblPrefix: "表"
+eqnPrefix: "式"
+chapDelim: "-"
+linkDelimiter: "-"
+
+# ------------------------------------------------------------
+# 标题前缀（出现在“图1-2 图名”里的“图”字）
+# figureTitle 与 figPrefix 不同：前者用于“图题”，后者用于“引用”
+# titleDelimiter 控制“图1-2”和标题之间的空格
+# ------------------------------------------------------------
+figureTitle: "图"
+tableTitle: "表"
+titleDelim: " "
+
+# ✨ 新增：覆盖默认模板，去掉中间的冒号
+figureTemplate: "$$figureTitle$$ $$i$$$$titleDelim$$ $$t$$"
+tableTemplate: "$$tableTitle$$ $$i$$$$titleDelim$$ $$t$$"
+
+
+# ------------------------------------------------------------
+# Word 样式映射
+# 必须确保 reference.docx 中存在 Caption / Subcaption 这两个样式
+# figureTitleStyle：主图标题的样式（推荐使用 Caption）
+# tableTitleStyle：表格标题样式
+# ------------------------------------------------------------
+figureTitleStyle: Caption
+tableTitleStyle: Caption
+
+# ------------------------------------------------------------
+# 主图和表格标题的位置
+# figureTitlePosition: bottom → 图名在图片下方（中国论文格式）
+# tableTitlePosition: top    → 表名在表格上方（中国论文格式）
+# ------------------------------------------------------------
+figureTitlePosition: bottom
+tableTitlePosition: top
+
+# ------------------------------------------------------------
+# 代码清单设置
+# lstPrefix：引用时的前缀（如"见代码清单1-2"）
+# listingTitle：代码块标题中显示的前缀
+# listingTemplate：代码清单标题的生成模板
+#   $$listingTitle$$ → "代码"
+#   $$i$$ → 自动编号 (如 1-2)
+#   $$t$$ → 代码块的 caption 属性值
+# codeBlockCaptions：启用代码块标题功能
+# listingTitleStyle：代码清单标题在 Word 中的样式
+# ------------------------------------------------------------
+lstPrefix: "代码"
+listingTitle: "代码"
+listingTemplate: "$$listingTitle$$ $$i$$$$titleDelim$$ $$t$$"
+codeBlockCaptions: true
+listingTitleStyle: Caption
+
+# ------------------------------------------------------------
+# 分图设置（核心部分）
+# subfigGrid = true → 使用表格排版 a、b 分图（稳定、不乱位）
+# subfigLabels = "alpha a" → 自动编号：a, b, c ...
+#
+# subfigureTemplate：
+#   整组图（主图）底部的“图1-2 图名”的生成模板
+#   $$figureTitle$$ → “图”
+#   $$i$$ → 自动编号 (如 1-2)
+#   $$t$$ → 你在 markdown 中写的总标题文本
+#
+# subfigureChildTemplate：
+#   每个分图下面“(a) 分图1”的模板
+#   $$i$$ → a, b, c
+#   $$t$$ → 分图标题（来自 ![分图1]）
+#
+# subfigureTitleStyle：分图标题样式（一般为 Subcaption）
+# ------------------------------------------------------------
+subfigGrid: true
+subfigLabels: "alpha a"
+
+# 主图 (整组图) 下面的“图1-2 图名”
+subfigureTemplate: "$$figureTitle$$ $$i$$$$titleDelim$$ $$t$$"
+
+# 每一个分图下面的“(a) 分图1”
+subfigureChildTemplate: "($$i$$) $$t$$"
+
+# 分图标题样式（必须在 reference.docx 里存在）
+subfigureTitleStyle: Subcaption
+
+# ============================================================
+# 完成：以上配置已验证可以生成：
+# (a) 分图1
+# (b) 分图2
+# 图1-2 图名
+# ============================================================
